@@ -11,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 
-class UserSaved
+class UserCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,9 +21,9 @@ class UserSaved
      *
      * @return void
      */
-    public function __construct(public User $user1)
+    public function __construct(public User $createdUser)
     {
-        $this->user = $user1;
+        $this->user = $createdUser;
     }
 
 }

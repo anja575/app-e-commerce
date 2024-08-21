@@ -8,7 +8,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\OrderCreated;
 use App\Listeners\SendOrderCreatedEmail;
-use App\Events\UserSaved;
+use App\Events\UserCreated;
 use App\Listeners\SendWelcomeEmail;
 
 class EventServiceProvider extends ServiceProvider
@@ -25,7 +25,7 @@ class EventServiceProvider extends ServiceProvider
         OrderCreated::class => [
             SendOrderCreatedEmail::class,
         ],
-        UserSaved::class => [
+        UserCreated::class => [
             SendWelcomeEmail::class,
         ],
     ];

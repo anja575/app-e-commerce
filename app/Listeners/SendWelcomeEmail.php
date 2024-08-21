@@ -4,8 +4,8 @@ namespace App\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use App\Events\UserSaved;
-use App\Mail\HelloMail;
+use App\Events\UserCreated;
+use App\Mail\WelcomeEmail;
 use Illuminate\Support\Facades\Mail;
 
 class SendWelcomeEmail
@@ -27,9 +27,9 @@ class SendWelcomeEmail
      * @param  object  $event
      * @return void
      */
-    public function handle(UserSaved $event)
+    public function handle(UserCreated $event)
     {
         Mail::to($event->user->email)
-        ->send(new HelloMail($event->user));
+        ->send(new WelcomeEmail($event->user));
     }
 }

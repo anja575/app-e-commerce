@@ -51,9 +51,11 @@ Route::get('/users/{id}/orders', [UserOrderController::class, 'index'])->name('u
 
 
 
-Route::resource('orders.items', OrderOrderItemController::class)->only(['index']);
+//Route::resource('order.items', OrderOrderItemController::class);
+Route::resource('items', OrderItemController::class);
 
 
+Route::get('/order-items/{order_id}', [OrderOrderItemController::class, 'index']);
 
 
 

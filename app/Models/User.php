@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Events\UserSaved;
+use App\Events\UserCreated;
 
 class User extends Authenticatable
 {
@@ -55,6 +55,6 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $dispatchesEvents = [
-        'saved' => UserSaved::class,
+        'created' => UserCreated::class,
     ];
 }

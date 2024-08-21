@@ -40,14 +40,14 @@ class Order extends Model
     {
         return $this->hasMany(OrderStatus::class);
     }
-/*
+
    /**
      * The event map for the model.
      *
      * @var array<string, string>
-    
+    */
     protected $dispatchesEvents = [
-        'saved' => OrderCreated::class,
+        'created' => OrderCreated::class,
     ];
-*/
+
 }

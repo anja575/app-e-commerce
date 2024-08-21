@@ -6,6 +6,7 @@ use App\Models\OrderItem;
 use App\Http\Resources\OrderItemResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator; 
 
 class OrderItemController extends Controller
 {
@@ -49,7 +50,7 @@ class OrderItemController extends Controller
             'price' => $request->price,
         ]);
 
-        return response()->json(['Order item has been added!', new OrderItem($item)]);
+        return response()->json(['Order item has been added!']);
     }
 
     /**

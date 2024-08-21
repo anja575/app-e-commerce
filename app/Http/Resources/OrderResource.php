@@ -19,7 +19,7 @@ class OrderResource extends JsonResource
         $user = User::find($this->resource->user_id);
         return [
             'id' => $this->resource->id,
-            'user' => $user->id,
+            'user' => $user,
             'time'=> $this->resource->date_time,
             'price' => $this->resource->total_price,
             'status' => $this->resource->status,

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Order Created</title>
+    <title>ORDER CREATED</title>
 </head>
 <body>
-    <h1>Order Created</h1>
-    <p>Order ID: {{ $order->id }}</p>
-    <p>Total Price: ${{ $order->total_price }}</p>
+    <h1>ORDER CREATED</h1>
+    <p>Order number: {{ $order->id }}</p>
+    <p>Customer name: {{ $order->user->name }}</p>
+    <p>Total Price: €{{ $order->total_price }}</p>
     <!-- Dodajte više detalja po potrebi -->
 </body>
 </html>
