@@ -11,6 +11,8 @@ use App\Listeners\SendOrderCreatedEmail;
 use App\Mail\HelloMail;
 use App\Mail\OrderCreatedMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator; 
+use App\Models\User;
 
 class OrderController extends Controller
 {
@@ -72,7 +74,7 @@ class OrderController extends Controller
         //$listener = new \App\Listeners\SendOrderCreatedEmail();
         //$listener->handle(new \App\Events\OrderCreated($order));
 
-        return response()->json(['Order has been added!', new Order($order)]);
+        return response()->json(['Order has been added!']);
     }
 
     /**
