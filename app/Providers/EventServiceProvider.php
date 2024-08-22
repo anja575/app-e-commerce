@@ -10,6 +10,8 @@ use App\Events\OrderCreated;
 use App\Listeners\SendOrderCreatedEmail;
 use App\Events\UserCreated;
 use App\Listeners\SendWelcomeEmail;
+use App\Events\OrderStatusUpdated;
+use App\Listeners\SendOrderStatusUpdatedEmail;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserCreated::class => [
             SendWelcomeEmail::class,
+        ],
+        OrderStatusUpdated::class => [
+            SendOrderStatusUpdatedEmail::class,
         ],
     ];
 

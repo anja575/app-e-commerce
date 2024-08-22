@@ -8,6 +8,5 @@
     <p>Order number: {{ $order->id }}</p>
     <p>Customer name: {{ $order->user->name }}</p>
     <p>Total Price: €{{ $order->total_price }}</p>
-    <!-- Dodajte više detalja po potrebi -->
 </body>
 </html>

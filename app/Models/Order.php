@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\OrderCreated;
+use App\Events\OrderStatusUpdated;
 
 class Order extends Model
 {
@@ -48,6 +49,7 @@ class Order extends Model
     */
     protected $dispatchesEvents = [
         'created' => OrderCreated::class,
+        'updated' => OrderStatusUpdated::class
     ];
 
 }
