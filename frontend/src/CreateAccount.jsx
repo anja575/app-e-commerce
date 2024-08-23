@@ -1,33 +1,29 @@
 import React, { useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import apiService from "./apiService";
 
-export function LoginForm(props) {
-  const location = useLocation();
+export function CreateAccountForm(props) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
-  const redirect = new URLSearchParams(location.search).get("redirect");
 
-  function login(event) {
+  function createAccount(event) {
     setError("");
     event.preventDefault();
 
     apiService
-      .login(email, password)
+      .createAccount({ name, email, password })
       .then((response) => {
         const { access_token, user } = response.data;
         setToken(access_token);
-
-        const isAdmin = user.admin === 1;
-        setLoginInfo(isAdmin, user.name, user.email);
+        setLoginInfo(false, user.name, user.email);
         props.updateToken(access_token);
-
-        redirect === "cart" ? navigate(`/cart`) : navigate("/");
+        navigate("/shop");
       })
       .catch((error) => {
-        // setError(error.response.data.message);
+        setError("Account creation failed. Please try again.");
       });
   }
 
@@ -40,9 +36,19 @@ export function LoginForm(props) {
   }
 
   return (
-    <div className="login-form">
+    <div className="create-account-form">
       <div className="container">
-        <form className="register-form" onSubmit={login}>
+        <form className="register-form" onSubmit={createAccount}>
+          <div className="input-wrapper">
+            <label>Name</label>
+            <input
+              className="form-input"
+              type="text"
+              value={name}
+              onChange={(event) => setName(event.target.value.trim())}
+            />
+          </div>
+
           <div className="input-wrapper">
             <label>Email</label>
             <input
@@ -60,14 +66,11 @@ export function LoginForm(props) {
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value.trim())}
+              minLength={8}
             />
           </div>
 
-          <button type="submit">Login</button>
-
-          <div className="create-account">
-            <NavLink to="/register">Create account</NavLink>
-          </div>
+          <button type="submit">Create Account</button>
 
           <div className="error-message">{error}</div>
         </form>

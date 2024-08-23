@@ -74,7 +74,7 @@ class OrderController extends Controller
         //$listener = new \App\Listeners\SendOrderCreatedEmail();
         //$listener->handle(new \App\Events\OrderCreated($order));
 
-        return response()->json(['Order has been added!']);
+        return response()->json(['Order has been added!','order' => $order]);
     }
 
     /**

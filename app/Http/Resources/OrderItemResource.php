@@ -21,8 +21,8 @@ class OrderItemResource extends JsonResource
         $product = Product::find($this->resource->product_id);
         return [
             'id' => $this->resource->id,
-            'order' => $order->id,
-            'product' => $product->id,
+            'order' => $order,
+            'product' => $product,
             'quantity'=> $this->resource->quantity,
             'price' => $this->resource->price,
         ];

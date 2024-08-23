@@ -7,23 +7,36 @@ import apiService from "./apiService";
 import Footer from "./Footer";
 import Cart from "./Cart";
 import { LoginForm } from "./LoginForm";
+import { CreateAccountForm } from "./CreateAccount";
+import Admin from "./Admin";
 
 function App() {
   const [token, setToken] = useState(apiService.getToken());
   const [products, setProducts] = useState([]);
   const [cartProducts, setCartProducts] = useState([]);
+  const isAdmin = apiService.getLoginInfo().isAdmin === "true";
 
   useEffect(() => {
     apiService
       .getProducts()
       .then((response) => {
-        console.log(response.data.data);
         setProducts(response.data.data);
       })
       .catch((error) => {
         console.error("Products download error", error);
       });
   }, []);
+
+  useEffect(() => {
+    apiService
+      .getProducts()
+      .then((response) => {
+        setProducts(response.data.data);
+      })
+      .catch((error) => {
+        console.error("Products refresh error", error);
+      });
+  }, [cartProducts]);
 
   const addToCart = (id) => {
     const selectedProduct = products.find((product) => product.id === id);
@@ -67,17 +80,23 @@ function App() {
     }
   };
 
-  console.log(token, ">");
-
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar />
+        <NavBar token={token} updateToken={(token) => setToken(token)} />
         <Routes>
           <Route
             path="/"
             element={token ? <Navigate to="/shop" /> : <Navigate to="/login" />}
           />
+
+          <Route
+            path="/register"
+            element={
+              <CreateAccountForm updateToken={(token) => setToken(token)} />
+            }
+          />
+          <Route path="/logout" element={<Navigate to="/login" />} />
 
           <Route
             path="/shop"
@@ -97,12 +116,21 @@ function App() {
           />
 
           <Route
+            path="/admin"
+            element={isAdmin ? <Admin /> : <Navigate to="/" />}
+          />
+
+          <Route
             path="/cart"
             element={
               <Cart
                 cartProducts={cartProducts}
                 onRemove={removeFromCart}
                 onAdd={addToCart}
+                token={token}
+                onOrderSuccess={() => {
+                  setCartProducts([]);
+                }}
               />
             }
           />

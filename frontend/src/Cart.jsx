@@ -1,20 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import Product from "./Product";
-import Footer from "./Footer";
 import apiService from "./apiService";
+import { useNavigate } from "react-router-dom";
 
-function Cart({ cartProducts, onRemove, onAdd }) {
-  // Funkcija za izračunavanje ukupne vrednosti
+function Cart({ cartProducts, onRemove, onAdd, token, onOrderSuccess }) {
+  const navigate = useNavigate();
+  const [orderMessage, setOrderMessage] = useState("");
+
   const calculateTotal = () => {
     return cartProducts
       .reduce((total, product) => {
-        return total + product.price * product.quantity; // Pretpostavljamo da 'product.price' i 'product.quantity' postoje
+        return total + product.price * product.quantity;
       }, 0)
-      .toFixed(2); // Zaokruživanje na 2 decimale
+      .toFixed(2);
   };
 
   const handleBuyClick = () => {
-    const payload = {
+    if (!token) {
+      return;
+    }
+
+    const orderPayload = {
       date_time: new Date().toISOString(),
       total_price: calculateTotal(),
       status: "confirmed",
@@ -22,13 +28,25 @@ function Cart({ cartProducts, onRemove, onAdd }) {
     };
 
     apiService
-      .createOrder(payload)
-      .then((response) => {
-        console.log("Order created successfully", response.data);
+      .createOrderWithItems(orderPayload, cartProducts)
+      .then(() => {
+        setOrderMessage(
+          `You created an order. Total cost is $${calculateTotal()}`
+        );
+        setTimeout(() => {
+          setOrderMessage("");
+          onOrderSuccess();
+          navigate("/shop");
+        }, 3000);
       })
       .catch((error) => {
         console.error("Error creating order:", error);
+        setOrderMessage("Error creating order");
       });
+  };
+
+  const handleLoginRedirect = () => {
+    navigate("/login?redirect=cart");
   };
 
   return (
@@ -50,10 +68,19 @@ function Cart({ cartProducts, onRemove, onAdd }) {
           ))
         )}
       </div>
-      {cartProducts.length > 0 && (
+
+      {orderMessage && <div className="order-message">{orderMessage}</div>}
+
+      {!orderMessage && cartProducts.length > 0 && (
         <div className="cart-summary">
-          <span className="total-amount">Total: ${calculateTotal()}</span>
-          <button onClick={handleBuyClick}>BUY</button>
+          <div className="content">
+            <span className="total-amount">Total: ${calculateTotal()}</span>
+            {token ? (
+              <button onClick={handleBuyClick}>BUY</button>
+            ) : (
+              <button onClick={handleLoginRedirect}>Login to Buy</button>
+            )}
+          </div>
         </div>
       )}
     </div>

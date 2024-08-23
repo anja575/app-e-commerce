@@ -15,6 +15,10 @@ class ApiService {
     });
   }
 
+  logout() {
+    window.sessionStorage.clear();
+  }
+
   setLoginInfo(isAdmin, username, email) {
     window.sessionStorage.setItem("isAdmin", isAdmin);
     window.sessionStorage.setItem("username", username);
@@ -37,6 +41,16 @@ class ApiService {
     return { isAdmin, username, email };
   }
 
+  getOrders() {
+    return axios.get("http://localhost:8000/api/orders");
+  }
+
+  updateOrderStatus(id, newStatus) {
+    return axios.put(`http://localhost:8000/api/orders/${id}`, {
+      status: newStatus,
+    });
+  }
+
   getEmail() {
     return window.sessionStorage.getItem("email");
   }
@@ -47,6 +61,39 @@ class ApiService {
 
   createOrder(payload) {
     return axios.post("http://localhost:8000/api/orders", payload);
+  }
+
+  createAccount(payload) {
+    return axios.post("http://localhost:8000/api/register", payload);
+  }
+
+  createOrderWithItems(orderPayload, cartProducts) {
+    return this.createOrder(orderPayload).then((response) => {
+      const orderId = response.data.order.id;
+
+      cartProducts.forEach((product) => {
+        axios
+          .post("http://localhost:8000/api/items", null, {
+            params: {
+              order_id: orderId,
+              product_id: product.id,
+              quantity: product.quantity,
+              price: product.price,
+            },
+          })
+          .catch((error) => {
+            console.error(
+              `Error creating order item for product ${product.id}:`,
+              error
+            );
+          });
+      });
+
+      return response.data;
+    });
+  }
+  getOrderDetails(orderId) {
+    return axios.get(`http://localhost:8000/api/order-items/${orderId}`);
   }
 }
 

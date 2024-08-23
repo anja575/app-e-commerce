@@ -50,7 +50,7 @@ class OrderItemController extends Controller
             'price' => $request->price,
         ]);
 
-        return response()->json(['Order item has been added!']);
+        return response()->json(['Order item has been added!', 'item']);
     }
 
     /**

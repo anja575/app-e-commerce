@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Events\OrderCreated;
 use App\Events\OrderStatusUpdated;
+use App\Models\User;
+use App\Models\OrderItems;
 
 class Order extends Model
 {
@@ -32,14 +34,6 @@ class Order extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
-    }
-
-    /**
-     * Get the status changes for the order.
-     */
-    public function orderStatuses()
-    {
-        return $this->hasMany(OrderStatus::class);
     }
 
    /**

@@ -28,8 +28,8 @@ class SendOrderCreatedEmail
      */
     public function handle(OrderCreated $event)
     {
-        //mail to anja jer sam ja kao admin sad tu 
-        Mail::to('anja.cirkovic00@gmail.com')
+        
+        Mail::to($event->order->user->email)
         ->send(new OrderCreatedEmail($event->order));
     }
 }
